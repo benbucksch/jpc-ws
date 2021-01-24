@@ -110,7 +110,7 @@ export default class JPCWebSocket extends JPCProtocol {
     if (responseMethod) {
       return await this._wsCall.makeCall(method, payload);
     } else {
-      this._wsCall.makeCall(method, payload).catch(console.error);
+      return this._wsCall.makeCall(method, payload).catch(console.error);
     }
   }
 }

@@ -27,6 +27,7 @@ class App {
   constructor() {
     this.cars = [
       new Car("Fred Flintstone"),
+      new Car("Barney"),
     ];
   }
 }

@@ -8,7 +8,19 @@ import WebSocket from "ws";
 const kPort = 8672;
 
 async function start() {
-  await new JPCWebSocket().connect("test", null, kPort);
+  let jpc = new JPCWebSocket();
+  await jpc.connect("test", null, kPort);
+
+  let app = await jpc.getRemoteStartObject();
+  console.log("app", app);
+  let cars = app.cars;
+  console.log("cars", cars);
+  for (let car of cars) {
+    console.log("car", car);
+    console.log("Car of " + (await car.owner));
+    await car.startEngine();
+    console.log("  Vroom!");
+  }
 }
 
 (async () => {
