@@ -14,7 +14,6 @@ async function start() {
   let app = await jpc.getRemoteStartObject();
   console.log("app", app);
   let cars = app.cars;
-  console.log("cars", cars);
   for (let car of cars) {
     console.log("car", car);
     console.log("Car of " + (await car.owner));

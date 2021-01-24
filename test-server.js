@@ -30,6 +30,7 @@ class App {
       new Car("Barney"),
     ];
   }
+  testFunc() {}
 }
 
 
