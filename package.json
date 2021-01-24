@@ -1,0 +1,30 @@
+{
+  "name": "jpc-wc",
+  "version": "0.1.0",
+  "description": "Allows remote procedure calls between JS objects over WebSocket",
+  "dependencies": {
+    "jpc": "https://github.com/benbucksch/jpc/"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test.js"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benbucksch/jpc-wc.git"
+  },
+  "keywords": [
+    "rpc",
+    "ipc",
+    "remote",
+    "corba",
+    "electron"
+  ],
+  "author": "Ben Bucksch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benbucksch/jpc/issues"
+  },
+  "homepage": "https://github.com/benbucksch/jpc-wc#readme"
+}
