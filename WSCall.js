@@ -1,4 +1,4 @@
-import { assert } from "jpc/util";
+import { assert } from "jpc/util.js";
 
 /**
  * Creates a very thin generic wrapper around WebSockets that allows to make
@@ -27,7 +27,7 @@ import { assert } from "jpc/util";
  * await makeCall("/user", { license: "4" });
  * throws an exception with .message == "I don't know what you're talking about";
  */
-export class WSCall  {
+export default class WSCall  {
   /**
    * @param webSocket {WebSocket from ws}
    */
