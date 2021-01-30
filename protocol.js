@@ -26,6 +26,10 @@ export default class JPCWebSocket extends JPCProtocol {
   /**
    * Creates a WebSocket server.
    *
+   * Attention: Unlike the name suggests, this waits until the first client
+   * connects, and then returns. This class currently cannot deal with
+   * multiple clients connecting.
+   *
    * @param secret {string} passcode that the client must send to be able to connect
    *    TODO implement this
    * @param port {Integer} Between 1024 and 65535

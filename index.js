@@ -1,1 +1,2 @@
-export * from "protocol.js";
+import JPCWS from "./protocol.js";
+export default JPCWS;
