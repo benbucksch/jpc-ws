@@ -12,7 +12,7 @@ export default class WSCall extends MessageCall {
     webSocket.on("message", message => this._incomingMessage(message));
   }
 
-  send(messageStr) {
-    this._webSocket.send(messageStr);
+  send(message) {
+    this._webSocket.send(JSON.stringify(message));
   }
 }
