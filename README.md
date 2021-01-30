@@ -9,4 +9,22 @@ See the [jpc API](https://github.com/benbucksch/jpc/#README.md)
 
 This implements the WebSocket protocol.
 
-# WebSocket
+# WebSocket server
+
+```
+import { JPCWebSocket } from "jpc-ws";
+
+let jpc = new JPCWebSocket(myApp);
+await jpc.listen("test", kPort, false);
+```
+
+
+# WebSocket client
+
+```
+import { JPCWebSocket } from "jpc-ws";
+
+let jpc = new JPCWebSocket();
+await jpc.connect("test", null, kPort);
+let myApp = await jpc.getRemoteStartObject();
+```
