@@ -19,7 +19,7 @@ class Car extends Movable {
     this._owner = val;
   }
   startEngine() {
-    console.log("Engine started");
+    console.log("Engine started.");
   }
 }
 
