@@ -1,6 +1,6 @@
 import WSCall from "./WSCall.js";
 import JPCProtocol from "jpc/protocol.js";
-import WebSocket from "ws";
+import WebSocketNode from "ws";
 import { assert } from "jpc/util.js";
 
 /**
@@ -39,9 +39,9 @@ export default class JPCWebSocket extends JPCProtocol {
    *   Currently not supported.
    */
   async listen(secret, port, openPublic) {
-    assert(typeof(secret) == "string", "Need secret key");
-    assert(typeof(port) == "number", "Need port");
-    let server = new WebSocket.Server({ port: port });
+    assert(typeof (secret) == "string", "Need secret key");
+    assert(typeof (port) == "number", "Need port");
+    let server = new WebSocketNode.Server({ port: port });
     return new Promise((resolve, reject) => {
       server.on("connection", async webSocket => {
         try {
@@ -62,12 +62,20 @@ export default class JPCWebSocket extends JPCProtocol {
    * @param port {Integer} Between 1024 and 65535
    */
   async connect(secret, hostname, port) {
-    assert(typeof(secret) == "string", "Need secret key");
-    assert(typeof(port) == "number", "Need port");
-    assert( !hostname || typeof(hostname) == "string", "Invalid hostname");
+    assert(typeof (secret) == "string", "Need secret key");
+    assert(typeof (port) == "number", "Need port");
+    assert(!hostname || typeof (hostname) == "string", "Invalid hostname");
     hostname = hostname || "localhost";
     let url = `ws://${hostname}:${port}`;
-    let webSocket = new WebSocket(url);
+    let webSocket;
+    if (window) { // browser
+      webSocket = new WebSocket(url);
+      webSocket.on = (eventName, func) => {
+        webSocket.addEventListener(eventName, func, false);
+      };
+    } else { // node.js
+      webSocket = new WebSocketNode(url);
+    }
     return new Promise((resolve, reject) => {
       // Open a network connection to the WebSocket server
       webSocket.on("open", async () => {
