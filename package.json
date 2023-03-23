@@ -4,7 +4,7 @@
   "description": "Allows remote procedure calls between JS objects over WebSocket",
   "dependencies": {
     "jpc-core": "^0.2.0",
-    "ws": "^8.13.0"
+    "ws": "7.4.2"
   },
   "devDependencies": {},
   "scripts": {
