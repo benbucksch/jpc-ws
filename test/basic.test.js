@@ -1,4 +1,4 @@
-import { expect, test, beforeAll, afterAll } from 'vitest';
+import { expect, expectTypeOf, test, beforeAll, afterAll } from 'vitest';
 import JPCWebSocket from "../protocol.js";
 import { start as startServer, kPort } from './server';
 
@@ -17,13 +17,12 @@ afterAll(async () => {
 });
 
 test('Car class', async () => {
-  console.log("app", app);
-  let cars = app.cars;
+  let cars = await app.cars;
   for (let car of cars) {
-    console.log("car", car);
     let owner = await car.owner;
-    console.log("Car of " + owner);
+    expect(owner).string();
+    expect(await car.running).toBeFalsy();
     await car.startEngine();
-    console.log("  Vroom!");
+    expect(await car.running).toBeTruthy();
   }
 });

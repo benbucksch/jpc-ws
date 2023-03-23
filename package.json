@@ -10,6 +10,7 @@
     "vitest": "^0.29.7"
   },
   "scripts": {
+    "test-dev": "vitest dev",
     "test": "vitest"
   },
   "type": "module",
