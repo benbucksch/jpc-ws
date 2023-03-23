@@ -1,6 +1,4 @@
 import JPCWebSocket from "./protocol.js";
-import WebSocket from "ws";
-
 
 /////////////////////////////////
 // Test

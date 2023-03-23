@@ -1,5 +1,4 @@
 import JPCWebSocket from "./protocol.js";
-import WebSocket from "ws";
 
 /////////////////////////
 // Some classes
@@ -30,7 +29,7 @@ class App {
       new Car("Barney"),
     ];
   }
-  testFunc() {}
+  testFunc() { }
 }
 
 

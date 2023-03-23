@@ -1,7 +1,7 @@
 import WSCall from "./WSCall.js";
-import JPCProtocol from "jpc/protocol.js";
+import JPCProtocol from "jpc-core/protocol.js";
 import WebSocketNode from "ws";
-import { assert } from "jpc/util.js";
+import { assert } from "jpc-core/util.js";
 
 /**
  * Wire protocol API
