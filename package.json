@@ -10,6 +10,7 @@
   "scripts": {
     "test": "node test-server.js & sleep 1 && node test-client.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/benbucksch/jpc-wc.git"
