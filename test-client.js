@@ -4,26 +4,39 @@ import JPCWebSocket from "./protocol.js";
 // Test
 
 const kPort = 8672;
+let jpc;
+let app;
 
 async function start() {
-  let jpc = new JPCWebSocket();
-  await jpc.connect("test", null, kPort);
+  await connect();
+  await test1();
+  await end();
+}
 
-  let app = await jpc.getRemoteStartObject();
+async function connect() {
+  try {
+    jpc = new JPCWebSocket();
+    await jpc.connect("test", null, kPort);
+    app = await jpc.getRemoteStartObject();
+  } catch (ex) {
+    console.error(ex);
+  }
+}
+
+async function end() {
+  app.exit();
+}
+
+async function test1() {
   console.log("app", app);
   let cars = app.cars;
   for (let car of cars) {
     console.log("car", car);
-    console.log("Car of " + (await car.owner));
+    let owner = await car.owner;
+    console.log("Car of " + owner);
     await car.startEngine();
     console.log("  Vroom!");
   }
 }
 
-(async () => {
-  try {
-    await start();
-  } catch (ex) {
-    console.error(ex);
-  }
-})();
+start();

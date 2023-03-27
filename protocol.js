@@ -2,6 +2,7 @@ import WSCall from "./WSCall.js";
 import JPCProtocol from "jpc-core/protocol.js";
 import WebSocketNode from "ws";
 import { assert } from "jpc-core/util.js";
+import { consoleError } from "../jpc-core/util.js";
 
 /**
  * Wire protocol API
@@ -68,7 +69,7 @@ export default class JPCWebSocket extends JPCProtocol {
     hostname = hostname || "localhost";
     let url = `ws://${hostname}:${port}`;
     let webSocket;
-    if (window) { // browser
+    if (typeof (window) != "undefined") { // browser
       webSocket = new WebSocket(url);
       webSocket.on = (eventName, func) => {
         webSocket.addEventListener(eventName, func, false);
@@ -122,7 +123,7 @@ export default class JPCWebSocket extends JPCProtocol {
     if (responseMethod) {
       return await this._wsCall.makeCall(method, payload);
     } else {
-      return this._wsCall.makeCall(method, payload).catch(console.error);
+      return this._wsCall.makeCall(method, payload).catch(consoleError);
     }
   }
 }

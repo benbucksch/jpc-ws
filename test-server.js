@@ -30,6 +30,11 @@ class App {
     ];
   }
   testFunc() { }
+
+  exit() {
+    console.log("Server stopped");
+    process.exit();
+  }
 }
 
 
@@ -41,6 +46,7 @@ const kPort = 8672;
 async function start() {
   let jpc = new JPCWebSocket(new App());
   await jpc.listen("test", kPort, false);
+  console.log("Server started");
 }
 
 (async () => {
