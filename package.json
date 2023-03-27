@@ -6,9 +6,11 @@
     "jpc-core": "^0.2.0",
     "ws": "7.4.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "vitest": "^0.29.7"
+  },
   "scripts": {
-    "test": "node test-server.js & sleep 1 && node test-client.js"
+    "test": "vitest"
   },
   "type": "module",
   "repository": {

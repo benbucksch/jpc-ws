@@ -1,12 +1,12 @@
-import JPCWebSocket from "./protocol.js";
+import JPCWebSocket from "../protocol.js";
 
 /////////////////////////
 // Some classes
 
-class Movable {
+export class Movable {
 }
 
-class Car extends Movable {
+export class Car extends Movable {
   constructor(owner) {
     super();
     this._owner = owner;
@@ -22,7 +22,7 @@ class Car extends Movable {
   }
 }
 
-class App {
+export class App {
   constructor() {
     this.cars = [
       new Car("Fred Flintstone"),
@@ -32,8 +32,11 @@ class App {
   testFunc() { }
 
   exit() {
+    if (jpc) {
+      jpc.stopListening();
+    }
     console.log("Server stopped");
-    process.exit();
+    //process.exit();
   }
 }
 
@@ -41,18 +44,12 @@ class App {
 /////////////////////////////////
 // Test
 
-const kPort = 8672;
+export const kPort = 8672;
+let jpc;
 
-async function start() {
-  let jpc = new JPCWebSocket(new App());
-  await jpc.listen("test", kPort, false);
+export async function start() {
+  console.log("start server");
+  jpc = new JPCWebSocket(new App());
+  jpc.listen("test", kPort, false); // await would wait for the first client to connect
   console.log("Server started");
 }
-
-(async () => {
-  try {
-    await start();
-  } catch (ex) {
-    console.error(ex);
-  }
-})();

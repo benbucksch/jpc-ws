@@ -43,6 +43,7 @@ export default class JPCWebSocket extends JPCProtocol {
     assert(typeof (secret) == "string", "Need secret key");
     assert(typeof (port) == "number", "Need port");
     let server = new WebSocketNode.Server({ port: port });
+    this.server = server;
     return new Promise((resolve, reject) => {
       server.on("connection", async webSocket => {
         try {
@@ -53,6 +54,12 @@ export default class JPCWebSocket extends JPCProtocol {
         }
       });
     });
+  }
+
+  async stopListening() {
+    if (this.server) {
+      this.server.close();
+    }
   }
 
   /**
