@@ -68,7 +68,7 @@ export default class JPCWebSocket extends JPCProtocol {
     hostname = hostname || "localhost";
     let url = `ws://${hostname}:${port}`;
     let webSocket;
-    if (window) { // browser
+    if (typeof WebSocket == "function") { // browser
       webSocket = new WebSocket(url);
       webSocket.on = (eventName, func) => {
         webSocket.addEventListener(eventName, func, false);
