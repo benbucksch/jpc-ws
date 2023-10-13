@@ -107,22 +107,14 @@ export default class JPCWebSocket extends JPCProtocol {
    * Implements the wire protocol.
    *
    * @param method {string} the message name, e.g. "func", "get" etc.
-   * @param responseMethod {string} (optional)
-   *    if given, wait for the remote side to respond with this method,
-   *    and return the payload of `responseMethod`.
    * @param payload {JSON} see value in PROTOCOL.md
    * @returns {any} see value in PROTOCOL.md
-   *   The payload of the corresponding `responseMethod` answer.
-   *   If `responseMethod` is not given, returns null/undefined.
+   *   The payload of the corresponding answer.
    * @throws {Error} if:
    *   - the remote end threw an exception
    *   - the connection disappeared
    */
-  async callRemote(method, responseMethod, payload) {
-    if (responseMethod) {
-      return await this._wsCall.makeCall(method, payload);
-    } else {
-      return this._wsCall.makeCall(method, payload).catch(console.error);
-    }
+  async callRemote(method, payload) {
+    return this._wsCall.makeCall(method, payload);
   }
 }
