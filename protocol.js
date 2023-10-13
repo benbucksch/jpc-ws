@@ -26,8 +26,7 @@ export default class JPCWebSocket extends JPCProtocol {
   /**
    * Creates a WebSocket server.
    *
-   * Attention: Unlike the name suggests, this waits until the first client
-   * connects, and then returns. This class currently cannot deal with
+   * Attention: This class currently cannot deal with
    * multiple clients connecting.
    *
    * @param secret {string} passcode that the client must send to be able to connect
@@ -43,12 +42,12 @@ export default class JPCWebSocket extends JPCProtocol {
     let host = openPublic ? '0.0.0.0' : '127.0.0.1'; // XXX what about IPv6?
     let server = new WebSocketNode.Server({ host: host, port: port });
     return new Promise((resolve, reject) => {
+      server.on("listening", resolve);
       server.on("connection", async webSocket => {
         try {
           await this.init(webSocket);
-          resolve();
         } catch (ex) {
-          reject(ex);
+          console.log(ex);
         }
       });
     });
