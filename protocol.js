@@ -7,12 +7,13 @@ import { assert } from "jpc-core/util.js";
  * Wire protocol API
  */
 export default class JPCWebSocket extends JPCProtocol {
+  _wsCall = null;
+  _server = null;
   /**
    * @param startObject {Object} Will be returned to client in "start" function
    */
   constructor(startObject) {
     super(startObject);
-    this._wsCall = null;
   }
 
   /**
@@ -40,10 +41,10 @@ export default class JPCWebSocket extends JPCProtocol {
     assert(typeof (secret) == "string", "Need secret key");
     assert(typeof (port) == "number", "Need port");
     let host = openPublic ? '0.0.0.0' : '127.0.0.1'; // XXX what about IPv6?
-    let server = new WebSocketNode.Server({ host: host, port: port });
+    this._server = new WebSocketNode.Server({ host: host, port: port });
     return new Promise((resolve, reject) => {
-      server.on("listening", resolve);
-      server.on("connection", async webSocket => {
+      this._server.on("listening", resolve);
+      this._server.on("connection", async webSocket => {
         try {
           await this.init(webSocket);
         } catch (ex) {
@@ -86,6 +87,16 @@ export default class JPCWebSocket extends JPCProtocol {
         }
       });
     });
+  }
+
+  /**
+   * Closes the websocket connection.
+   */
+  close() {
+    this._wsCall.close();
+    if (this._server) {
+      this._server.close();
+    }
   }
 
   /**
