@@ -36,12 +36,12 @@ export default class JPCWebSocket extends JPCProtocol {
    * @param openPublic {boolean} (optional, default false)
    *   If true, allow other computers from the network to connect.
    *   If false, allow only applications on the local host to connect.
-   *   Currently not supported.
    */
   async listen(secret, port, openPublic) {
     assert(typeof (secret) == "string", "Need secret key");
     assert(typeof (port) == "number", "Need port");
-    let server = new WebSocketNode.Server({ port: port });
+    let host = openPublic ? '0.0.0.0' : '127.0.0.1'; // XXX what about IPv6?
+    let server = new WebSocketNode.Server({ host: host, port: port });
     return new Promise((resolve, reject) => {
       server.on("connection", async webSocket => {
         try {
