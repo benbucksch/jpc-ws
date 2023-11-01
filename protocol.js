@@ -43,7 +43,7 @@ export default class JPCWebSocket extends JPCProtocol {
     let host = openPublic ? '0.0.0.0' : '127.0.0.1'; // XXX what about IPv6?
     this._server = new WebSocketNode.Server({ host: host, port: port });
     return new Promise((resolve, reject) => {
-      this._server.on("listening", resolve);
+      this._server.on("listening", () => resolve(this._server.address().port));
       this._server.on("connection", async webSocket => {
         try {
           await this.init(webSocket);
