@@ -79,7 +79,7 @@ export default class JPCWebSocket extends JPCProtocol {
     if (typeof (window) != "undefined") { // browser
       webSocket = new WebSocket(url);
       webSocket.on = (eventName, func) => {
-        webSocket.addEventListener(eventName, func, false);
+        webSocket.addEventListener(eventName, message => func(message.data), false);
       };
     } else { // node.js
       webSocket = new WebSocketNode(url);
