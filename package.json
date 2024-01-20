@@ -7,12 +7,14 @@
     "ws": "7.4.2"
   },
   "devDependencies": {
-    "jest": "^27.5.1"
+    "vitest": "^0.29.7"
   },
   "type": "module",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test-dev": "vitest dev",
+    "test": "vitest"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/benbucksch/jpc-wc.git"
