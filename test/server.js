@@ -5,7 +5,13 @@ import JPCWebSocket from "../protocol.js";
 
 export class Movable {
   constructor() {
-    this.running = false;
+    this._running = false;
+  }
+  get running() {
+    return this._running;
+  }
+  set running(val) {
+    this._running = val;
   }
 }
 
@@ -33,13 +39,6 @@ export class App {
     ];
   }
   testFunc() { }
-
-  exit() {
-    if (jpc) {
-      jpc.stopListening();
-    }
-    process.exit();
-  }
 }
 
 
@@ -53,4 +52,10 @@ export async function start() {
   jpc = new JPCWebSocket(new App());
   jpc.listen("test", kPort, false); // await would wait for the first client to connect
   //console.log("Server started");
+}
+
+export async function stop() {
+  if (jpc) {
+    jpc.stopListening();
+  }
 }
