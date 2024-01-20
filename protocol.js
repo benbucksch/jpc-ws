@@ -48,7 +48,7 @@ export default class JPCWebSocket extends JPCProtocol {
         try {
           await this.init(webSocket);
         } catch (ex) {
-          console.log(ex);
+          reject(ex);
         }
       });
     });
