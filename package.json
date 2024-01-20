@@ -9,6 +9,7 @@
   "devDependencies": {
     "vitest": "^0.29.7"
   },
+  "type": "module",
   "scripts": {
     "test-dev": "vitest dev",
     "test": "vitest"

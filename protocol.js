@@ -8,12 +8,13 @@ import { consoleError } from "../jpc-core/util.js";
  * Wire protocol API
  */
 export default class JPCWebSocket extends JPCProtocol {
+  _wsCall = null;
+  _server = null;
   /**
    * @param startObject {Object} Will be returned to client in "start" function
    */
   constructor(startObject) {
     super(startObject);
-    this._wsCall = null;
   }
 
   /**
@@ -27,8 +28,7 @@ export default class JPCWebSocket extends JPCProtocol {
   /**
    * Creates a WebSocket server.
    *
-   * Attention: Unlike the name suggests, this waits until the first client
-   * connects, and then returns. This class currently cannot deal with
+   * Attention: This class currently cannot deal with
    * multiple clients connecting.
    *
    * @param secret {string} passcode that the client must send to be able to connect
@@ -37,18 +37,17 @@ export default class JPCWebSocket extends JPCProtocol {
    * @param openPublic {boolean} (optional, default false)
    *   If true, allow other computers from the network to connect.
    *   If false, allow only applications on the local host to connect.
-   *   Currently not supported.
    */
   async listen(secret, port, openPublic) {
     assert(typeof (secret) == "string", "Need secret key");
     assert(typeof (port) == "number", "Need port");
-    let server = new WebSocketNode.Server({ port: port });
-    this.server = server;
+    let host = openPublic ? '0.0.0.0' : '127.0.0.1'; // XXX what about IPv6?
+    this._server = new WebSocketNode.Server({ host: host, port: port });
     return new Promise((resolve, reject) => {
-      server.on("connection", async webSocket => {
+      this._server.on("listening", () => resolve(this._server.address().port));
+      this._server.on("connection", async webSocket => {
         try {
           await this.init(webSocket);
-          resolve();
         } catch (ex) {
           reject(ex);
         }
@@ -57,8 +56,8 @@ export default class JPCWebSocket extends JPCProtocol {
   }
 
   async stopListening() {
-    if (this.server) {
-      this.server.close();
+    if (this._server) {
+      this._server.close();
     }
   }
 
@@ -76,7 +75,7 @@ export default class JPCWebSocket extends JPCProtocol {
     hostname = hostname || "localhost";
     let url = `ws://${hostname}:${port}`;
     let webSocket;
-    if (typeof (window) != "undefined") { // browser
+    if (typeof WebSocket == "function") { // browser
       webSocket = new WebSocket(url);
       webSocket.on = (eventName, func) => {
         webSocket.addEventListener(eventName, message => func(message.data), false);
@@ -98,6 +97,16 @@ export default class JPCWebSocket extends JPCProtocol {
   }
 
   /**
+   * Closes the websocket connection.
+   */
+  close() {
+    this._wsCall.close();
+    if (this._server) {
+      this._server.close();
+    }
+  }
+
+  /**
    * Incoming calls.
    * Implements the wire protocol.
    *
@@ -115,22 +124,14 @@ export default class JPCWebSocket extends JPCProtocol {
    * Implements the wire protocol.
    *
    * @param method {string} the message name, e.g. "func", "get" etc.
-   * @param responseMethod {string} (optional)
-   *    if given, wait for the remote side to respond with this method,
-   *    and return the payload of `responseMethod`.
    * @param payload {JSON} see value in PROTOCOL.md
    * @returns {any} see value in PROTOCOL.md
-   *   The payload of the corresponding `responseMethod` answer.
-   *   If `responseMethod` is not given, returns null/undefined.
+   *   The payload of the corresponding answer.
    * @throws {Error} if:
    *   - the remote end threw an exception
    *   - the connection disappeared
    */
-  async callRemote(method, responseMethod, payload) {
-    if (responseMethod) {
-      return await this._wsCall.makeCall(method, payload);
-    } else {
-      return this._wsCall.makeCall(method, payload).catch(consoleError);
-    }
+  async callRemote(method, payload) {
+    return this._wsCall.makeCall(method, payload);
   }
 }

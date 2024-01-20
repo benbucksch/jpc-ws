@@ -15,4 +15,8 @@ export default class WSCall extends MessageCall {
   send(message) {
     this._webSocket.send(JSON.stringify(message));
   }
+
+  close() {
+    this._webSocket.close();
+  }
 }
