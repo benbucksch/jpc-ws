@@ -40,17 +40,18 @@ export default class JPCWebSocket extends JPCProtocol {
   async listen(secret, port, openPublic) {
     assert(typeof (secret) == "string", "Need secret key");
     assert(typeof (port) == "number", "Need port");
-    let host = openPublic ? '0.0.0.0' : '127.0.0.1'; // XXX what about IPv6?
+    let host = openPublic ? '0.0.0.0' : '127.0.0.1'; // TODO IPv6
     this._server = new WebSocketNode.Server({ host: host, port: port });
-    return new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       this._server.on("listening", () => resolve(this._server.address().port));
-      this._server.on("connection", async webSocket => {
-        try {
-          await this.init(webSocket);
-        } catch (ex) {
-          reject(ex);
-        }
-      });
+    });
+    console.log(`Listening JPC WebSocket on ${openPublic ? "all interfaces " : "localhost"}:${port}`);
+    this._server.on("connection", async webSocket => {
+      try {
+        await this.init(webSocket);
+      } catch (ex) {
+        reject(ex);
+      }
     });
   }
 
