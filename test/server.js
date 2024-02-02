@@ -50,7 +50,7 @@ let jpc;
 
 export async function start() {
   jpc = new JPCWebSocket(new App());
-  jpc.listen("test", kPort, false); // await would wait for the first client to connect
+  await jpc.listen("test", kPort, false);
   //console.log("Server started");
 }
 
