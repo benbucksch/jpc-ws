@@ -13,6 +13,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  jpc.close();
   stopServer();
 });
 
