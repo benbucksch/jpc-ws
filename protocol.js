@@ -9,6 +9,7 @@ import { assert } from "jpc-core/util.js";
 export default class JPCWebSocket extends JPCProtocol {
   _wsCall = null;
   _server = null;
+  errorCallback = (ex) => console.error(ex);
   /**
    * @param startObject {Object} Will be returned to client in "start" function
    */
@@ -42,17 +43,19 @@ export default class JPCWebSocket extends JPCProtocol {
     assert(typeof (port) == "number", "Need port");
     let host = openPublic ? '0.0.0.0' : '127.0.0.1'; // TODO IPv6
     this._server = new WebSocketNode.Server({ host: host, port: port });
-    await new Promise((resolve, reject) => {
+    await new Promise(resolve => {
       this._server.on("listening", () => resolve());
     });
     console.log(`Listening JPC WebSocket on ${openPublic ? "all interfaces " : "localhost"}:${port}`);
-    this._server.on("connection", async webSocket => {
-      try {
-        await this.init(webSocket);
-      } catch (ex) {
-        console.error(ex);
-      }
-    });
+    this._server.on("connection", webSocket => this.newConnection(webSocket));
+  }
+
+  async newConnection(webSocket) {
+    try {
+      await this.init(webSocket);
+    } catch (ex) {
+      this.errorCallback(ex);
+    }
   }
 
   async stopListening() {
