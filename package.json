@@ -1,6 +1,6 @@
 {
   "name": "jpc-ws",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Allows remote procedure calls between JS objects over WebSocket",
   "dependencies": {
     "jpc-core": "^0.2.2",
